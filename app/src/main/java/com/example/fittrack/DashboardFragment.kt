@@ -20,7 +20,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ViewModel
         viewModel = ViewModelProvider(requireActivity())
             .get(WorkoutViewModel::class.java)
 
@@ -29,36 +28,40 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         rvWorkouts.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = WorkoutAdapter(emptyList()) { workout ->
-            // Тук по-късно ще навигираме към детайли за тренировка
-            // findNavController().navigate(...)
+            val bundle = Bundle().apply {
+                putLong("workoutId", workout.id)
+            }
+
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_workoutDetailsFragment,
+                bundle
+            )
         }
         rvWorkouts.adapter = adapter
 
+        val btnAddRun = view.findViewById<Button>(R.id.btnAddRun)
+        val btnAddStrength = view.findViewById<Button>(R.id.btnAddStrength)
 
-
-        // Бутон, който добавя тестова тренировка
-        val btnAddTest = view.findViewById<Button>(R.id.btnAddTestWorkout)
-        btnAddTest.setOnClickListener {
-            val now = System.currentTimeMillis()
-            val testWorkout = WorkoutEntity(
-                title = "Тестова тренировка",
-                type = "run",
-                dateTime = now,
-                durationMinutes = 30,
-                distanceKm = 5.0,
-                sets = null,
-                reps = null,
-                photoUri = null,
-                latitude = null,
-                longitude = null,
-                notes = "Създадена от бутона"
+        btnAddRun.setOnClickListener {
+            val bundle = Bundle().apply { putString("workoutType", "run") }
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_workoutsFragment2,
+                bundle
             )
-            viewModel.addWorkout(testWorkout)
         }
 
-        // Наблюдаваме списъка от тренировки
+        btnAddStrength.setOnClickListener {
+            val bundle = Bundle().apply { putString("workoutType", "strength") }
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_workoutsFragment2,
+                bundle
+            )
+        }
+
+        // наблюдаваме списъка от тренировки
         viewModel.workouts.observe(viewLifecycleOwner) { list ->
             adapter.updateItems(list)
         }
     }
+
 }

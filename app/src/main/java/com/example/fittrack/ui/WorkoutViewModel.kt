@@ -48,6 +48,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             loadWorkouts() // след добавяне, презареждаме списъка
         }
     }
+    suspend fun getWorkoutById(id: Long): WorkoutEntity? = repository.getWorkoutById(id)
+
+
 
     // По-късно можем да добавим и update/delete
 }

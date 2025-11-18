@@ -13,10 +13,22 @@
         <action
             android:id="@+id/action_dashboardFragment_to_workoutsFragment2"
             app:destination="@id/workoutsFragment2" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_workoutDetailsFragment"
+            app:destination="@id/workoutDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/workoutsFragment2"
         android:name="com.example.fittrack.WorkoutsFragment"
         android:label="fragment_workouts"
         tools:layout="@layout/fragment_workouts" />
+    <argument
+        android:name="workoutType"
+        app:argType="string"
+        android:defaultValue="run" />
+    <fragment
+        android:id="@+id/workoutDetailsFragment"
+        android:name="com.example.fittrack.WorkoutDetailsFragment"
+        android:label="fragment_workout_details"
+        tools:layout="@layout/fragment_workout_details" />
 </navigation>

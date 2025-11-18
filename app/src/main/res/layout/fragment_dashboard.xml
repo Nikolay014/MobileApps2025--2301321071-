@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
+    <!-- Заглавие -->
     <TextView
         android:id="@+id/tvTitle"
         android:text="Моите тренировки"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btnAddTestWorkout"
-        android:text="Добави тестова тренировка"
-        android:layout_width="wrap_content"
+    <!-- Двата бутона: бягане / силова -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="12dp">
 
+        <Button
+            android:id="@+id/btnAddRun"
+            android:text="Добави бягане"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnAddStrength"
+            android:text="Добави силова"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- Списък с тренировките -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWorkouts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_weight="1" />
 
 </LinearLayout>

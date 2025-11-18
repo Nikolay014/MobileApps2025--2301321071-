@@ -19,4 +19,6 @@ interface WorkoutDao {
 
     @Query("SELECT * FROM workouts WHERE id = :id LIMIT 1")
     suspend fun getWorkoutById(id: Long): WorkoutEntity?
+
+
 }
