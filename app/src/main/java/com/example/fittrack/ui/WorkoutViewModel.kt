@@ -1,0 +1,53 @@
+package com.example.fittrack.ui
+
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.fittrack.data.AppDatabase
+import com.example.fittrack.data.WorkoutEntity
+import com.example.fittrack.data.WorkoutRepository
+import kotlinx.coroutines.launch
+
+class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: WorkoutRepository
+
+    // LiveData със списъка от тренировки (за Dashboard)
+    private val _workouts = MutableLiveData<List<WorkoutEntity>>()
+    val workouts: LiveData<List<WorkoutEntity>> get() = _workouts
+
+    init {
+        // взимаме базата и DAO-то
+        val db = AppDatabase.getInstance(application)
+        val workoutDao = db.workoutDao()
+        repository = WorkoutRepository(workoutDao)
+
+        // зареждаме тренировките от базата
+        viewModelScope.launch {
+            loadWorkouts()
+        }
+    }
+
+    private suspend fun loadWorkouts() {
+        _workouts.value = repository.getAllWorkouts()
+    }
+
+    // Публичен метод за ре-зареждане (например след добавяне)
+    fun refreshWorkouts() {
+        viewModelScope.launch {
+            loadWorkouts()
+        }
+    }
+
+    // Създаване на тренировка (по-късно ще подадем реални стойности от формата)
+    fun addWorkout(workout: WorkoutEntity) {
+        viewModelScope.launch {
+            repository.addWorkout(workout)
+            loadWorkouts() // след добавяне, презареждаме списъка
+        }
+    }
+
+    // По-късно можем да добавим и update/delete
+}
