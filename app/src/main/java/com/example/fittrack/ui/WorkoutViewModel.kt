@@ -41,13 +41,28 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    // Създаване на тренировка (по-късно ще подадем реални стойности от формата)
+
     fun addWorkout(workout: WorkoutEntity) {
         viewModelScope.launch {
             repository.addWorkout(workout)
             loadWorkouts() // след добавяне, презареждаме списъка
         }
     }
+    fun updateWorkout(workout: WorkoutEntity) {
+        viewModelScope.launch {
+            repository.updateWorkout(workout)
+            loadWorkouts()
+        }
+    }
+
+    fun deleteWorkout(workout: WorkoutEntity) {
+        viewModelScope.launch {
+            repository.deleteWorkout(workout)
+            loadWorkouts()
+        }
+    }
+
+
     suspend fun getWorkoutById(id: Long): WorkoutEntity? = repository.getWorkoutById(id)
 
 

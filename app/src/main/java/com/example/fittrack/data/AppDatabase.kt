@@ -24,9 +24,9 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "fittrack.db"     // името на файла с базата
+                    "fittrack.db"
                 )
-                    .fallbackToDestructiveMigration() // по желание
+                    .fallbackToDestructiveMigration()
                     .build()
 
                 INSTANCE = instance
