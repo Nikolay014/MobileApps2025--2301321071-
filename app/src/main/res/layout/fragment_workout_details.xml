@@ -5,11 +5,21 @@
     android:background="#F5F3FF"
     android:padding="16dp">
 
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:padding="8dp"
+            android:layout_margin="16dp"
+            android:backgroundTint="@android:color/holo_purple"
+            android:textColor="@android:color/white" />
 
         <!-- Карта / картичка -->
         <LinearLayout
@@ -106,13 +116,13 @@
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Редактирай" />
+                android:text="Update" />
 
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Изтрий"
+                android:text="Delete"
                 android:layout_marginStart="8dp"
                 android:textColor="@android:color/white"
                 android:backgroundTint="#D32F2F" />

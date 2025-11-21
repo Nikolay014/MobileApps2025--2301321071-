@@ -42,6 +42,9 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
 
         val btnEdit = view.findViewById<Button>(R.id.btnEdit)
         val btnDelete = view.findViewById<Button>(R.id.btnDelete)
+        val btnBack = view.findViewById<Button>(R.id.btnBack)
+
+
 
         // 🔹 Зареждаме тренировката от базата
         viewLifecycleOwner.lifecycleScope.launch {
@@ -87,6 +90,9 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
                     bundle
                 )
             }
+        }
+        btnBack.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }
