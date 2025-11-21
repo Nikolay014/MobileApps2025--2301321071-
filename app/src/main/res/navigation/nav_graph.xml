@@ -8,31 +8,57 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.fittrack.DashboardFragment"
-        android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
+
         <action
             android:id="@+id/action_dashboardFragment_to_workoutsFragment2"
             app:destination="@id/workoutsFragment2" />
+
         <action
             android:id="@+id/action_dashboardFragment_to_workoutDetailsFragment"
             app:destination="@id/workoutDetailsFragment" />
+
     </fragment>
+
+
     <fragment
         android:id="@+id/workoutsFragment2"
         android:name="com.example.fittrack.WorkoutsFragment"
-        android:label="fragment_workouts"
-        tools:layout="@layout/fragment_workouts" />
-    <argument
-        android:name="workoutType"
-        app:argType="string"
-        android:defaultValue="run" />
+        tools:layout="@layout/fragment_workouts">
+
+        <argument
+            android:name="workoutType"
+            app:argType="string"
+            android:defaultValue="run" />
+
+    </fragment>
+
+
     <fragment
         android:id="@+id/workoutDetailsFragment"
         android:name="com.example.fittrack.WorkoutDetailsFragment"
-        android:label="fragment_workout_details"
-        tools:layout="@layout/fragment_workout_details" >
+        tools:layout="@layout/fragment_workout_details">
+
         <action
             android:id="@+id/action_workoutDetailsFragment_to_workoutsFragment2"
             app:destination="@id/workoutsFragment2" />
+
+        <action
+            android:id="@+id/action_to_MapFragment"
+            app:destination="@id/mapFragment" />
+
     </fragment>
+
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.fittrack.MapFragment"
+        android:label="Map">
+
+        <argument
+            android:name="workoutId"
+            app:argType="long" />
+
+    </fragment>
+
 </navigation>

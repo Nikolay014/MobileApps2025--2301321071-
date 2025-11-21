@@ -104,13 +104,22 @@
                 android:textSize="15sp"
                 android:textColor="#5E5A78"
                 android:paddingBottom="4dp" />
+            <Button
+                android:id="@+id/btnViewOnMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View on Map" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="131dp"
+            android:layout_marginTop="16dp"
             android:gravity="end"
-            android:layout_marginTop="16dp">
+            android:orientation="horizontal">
+
+
+
 
             <Button
                 android:id="@+id/btnEdit"
@@ -122,10 +131,10 @@
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete"
                 android:layout_marginStart="8dp"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#D32F2F" />
+                android:backgroundTint="#D32F2F"
+                android:text="Delete"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>

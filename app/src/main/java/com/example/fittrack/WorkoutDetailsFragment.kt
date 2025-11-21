@@ -40,6 +40,7 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
         val tvExtra = view.findViewById<TextView>(R.id.tvExtra)
         val tvNotes = view.findViewById<TextView>(R.id.tvNotes)
 
+        val btnMap = view.findViewById<Button>(R.id.btnViewOnMap)
         val btnEdit = view.findViewById<Button>(R.id.btnEdit)
         val btnDelete = view.findViewById<Button>(R.id.btnDelete)
         val btnBack = view.findViewById<Button>(R.id.btnBack)
@@ -87,6 +88,17 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
                 }
                 findNavController().navigate(
                     R.id.action_workoutDetailsFragment_to_workoutsFragment2,
+                    bundle
+                )
+            }
+        }
+        btnMap.setOnClickListener {
+            currentWorkout?.let { w ->
+                val bundle = Bundle().apply {
+                    putLong("workoutId", w.id)
+                }
+                findNavController().navigate(
+                    R.id.action_to_MapFragment,
                     bundle
                 )
             }

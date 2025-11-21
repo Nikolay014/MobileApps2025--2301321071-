@@ -18,5 +18,9 @@ data class WorkoutEntity(
     val photoUri: String?,
     val latitude: Double?,
     val longitude: Double?,
-    val notes: String?
+    val notes: String?,
+    val startAddress: String? = null,
+    val startLatitude: Double? = null,
+    val startLongitude: Double? = null
+
 )
