@@ -5,9 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/dashboardFragment">
 
+    <!-- Dashboard -->
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.fittrack.DashboardFragment"
+        android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
 
         <action
@@ -20,45 +22,78 @@
 
     </fragment>
 
-
+    <!-- Създаване / редакция на тренировка -->
     <fragment
         android:id="@+id/workoutsFragment2"
         android:name="com.example.fittrack.WorkoutsFragment"
+        android:label="Workout"
         tools:layout="@layout/fragment_workouts">
 
         <argument
             android:name="workoutType"
             app:argType="string"
             android:defaultValue="run" />
-
     </fragment>
 
-
+    <!-- Детайли за тренировка -->
     <fragment
         android:id="@+id/workoutDetailsFragment"
         android:name="com.example.fittrack.WorkoutDetailsFragment"
+        android:label="Workout Details"
         tools:layout="@layout/fragment_workout_details">
 
         <action
             android:id="@+id/action_workoutDetailsFragment_to_workoutsFragment2"
             app:destination="@id/workoutsFragment2" />
 
+        <!-- Навигация към картата -->
         <action
             android:id="@+id/action_to_MapFragment"
             app:destination="@id/mapFragment" />
-
+        <action
+            android:id="@+id/action_to_EndMapFragment"
+            app:destination="@id/endMapFragment" />
     </fragment>
 
-
+    <!-- Карта със стартовата локация -->
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.fittrack.MapFragment"
-        android:label="Map">
+        android:label="Map"
+        tools:layout="@layout/fragment_map">
 
         <argument
-            android:name="workoutId"
-            app:argType="long" />
+            android:name="ARG_ADDRESS"
+            app:argType="string"
+            android:defaultValue="" />
 
+        <argument
+            android:name="ARG_TITLE"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
+
+    <fragment
+        android:id="@+id/endMapFragment"
+        android:name="com.example.fittrack.EndMapFragment"
+        android:label="End Map"
+        tools:layout="@layout/fragment_map">
+
+        <argument
+            android:name="ARG_LAT"
+            app:argType="float"
+            android:defaultValue="0.0" />
+
+        <argument
+            android:name="ARG_LNG"
+            app:argType="float"
+            android:defaultValue="0.0" />
+
+        <argument
+            android:name="ARG_TITLE"
+            app:argType="string"
+            android:defaultValue="Крайна точка" />
+    </fragment>
+
 
 </navigation>

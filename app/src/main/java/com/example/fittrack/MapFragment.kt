@@ -1,101 +1,80 @@
 package com.example.fittrack
 
+import android.location.Geocoder
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.ViewModelProvider
-import com.example.fittrack.ui.WorkoutViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
-class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
+class MapFragment : Fragment() {
 
-    private lateinit var viewModel: WorkoutViewModel
-    private var workoutId: Long = -1L
-
+    private var address: String = ""
+    private var name: String = ""
     private var googleMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        address = requireArguments().getString(ARG_ADDRESS, "")
+        name = requireArguments().getString(ARG_NAME, "")
+    }
 
-        workoutId = arguments?.getLong("workoutId", -1L) ?: -1L
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity()).get(WorkoutViewModel::class.java)
-
         val mapFragment =
-            childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-    }
+            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
-    override fun onMapReady(map: GoogleMap) {
-        googleMap = map
-
-        if (workoutId != -1L) {
-            loadWorkoutAndDisplay()
+        mapFragment.getMapAsync { map ->
+            googleMap = map
+            geocodeAndShow(address, name)
         }
     }
 
-    private fun loadWorkoutAndDisplay() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val workout = viewModel.getWorkoutById(workoutId) ?: return@launch
+    private fun geocodeAndShow(address: String, title: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            val results = runCatching {
+                geocoder.getFromLocationName(address, 1)
+            }.getOrNull()
 
-            val startLat = workout.startLatitude
-            val startLng = workout.startLongitude
-            val endLat = workout.latitude
-            val endLng = workout.longitude
+            val first = results?.firstOrNull()
+            val latLng = first?.let { LatLng(it.latitude, it.longitude) }
 
-            val startAddress = workout.startAddress ?: "Старт"
+            withContext(Dispatchers.Main) {
+                latLng?.let {
+                    googleMap?.clear()
+                    googleMap?.addMarker(MarkerOptions().position(it).title(title))
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
+                }
+            }
+        }
+    }
 
-            if (startLat != null && startLng != null && endLat != null && endLng != null) {
+    companion object {
+        private const val ARG_ADDRESS = "ARG_ADDRESS"
+        private const val ARG_NAME = "ARG_NAME"
 
-                val startPoint = LatLng(startLat, startLng)
-                val endPoint = LatLng(endLat, endLng)
-
-                // Маркер за старт
-                googleMap?.addMarker(
-                    MarkerOptions()
-                        .position(startPoint)
-                        .title(startAddress)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                )
-
-                // Маркер за край
-                googleMap?.addMarker(
-                    MarkerOptions()
-                        .position(endPoint)
-                        .title("Крайна точка")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                )
-
-                // Линия между тях
-                googleMap?.addPolyline(
-                    PolylineOptions()
-                        .add(startPoint, endPoint)
-                        .width(8f)
-                )
-
-                // Zoom до двете точки
-                val bounds = LatLngBounds.builder()
-                    .include(startPoint)
-                    .include(endPoint)
-                    .build()
-
-                googleMap?.animateCamera(
-                    CameraUpdateFactory.newLatLngBounds(bounds, 120)
-                )
+        fun newInstance(address: String, name: String) = MapFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_ADDRESS, address)
+                putString(ARG_NAME, name)
             }
         }
     }

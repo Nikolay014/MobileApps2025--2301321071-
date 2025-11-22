@@ -1,5 +1,6 @@
 package com.example.fittrack
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.Button
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 
 
@@ -41,6 +43,7 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
         val tvNotes = view.findViewById<TextView>(R.id.tvNotes)
 
         val btnMap = view.findViewById<Button>(R.id.btnViewOnMap)
+        val btnShare = view.findViewById<Button>(R.id.btnShare)
         val btnEdit = view.findViewById<Button>(R.id.btnEdit)
         val btnDelete = view.findViewById<Button>(R.id.btnDelete)
         val btnBack = view.findViewById<Button>(R.id.btnBack)
@@ -94,13 +97,36 @@ class WorkoutDetailsFragment : Fragment(R.layout.fragment_workout_details) {
         }
         btnMap.setOnClickListener {
             currentWorkout?.let { w ->
-                val bundle = Bundle().apply {
-                    putLong("workoutId", w.id)
-                }
                 findNavController().navigate(
                     R.id.action_to_MapFragment,
-                    bundle
+                    Bundle().apply {
+                        putString("ARG_ADDRESS", w.startAddress ?: "")
+                        putString("ARG_NAME", w.title)
+                    }
                 )
+            }
+        }
+        btnShare.setOnClickListener {
+            currentWorkout?.let { w ->
+                val text = buildString {
+                    appendLine("🏃 Тренировка: ${w.title}")
+                    appendLine("Тип: ${w.type}")
+                    if (w.distanceKm != null) appendLine("Дистанция: ${w.distanceKm} км")
+                    if (w.durationMinutes != null) appendLine("Време: ${w.durationMinutes} мин")
+                    if (!w.startAddress.isNullOrBlank()) appendLine("Старт: ${w.startAddress}")
+                    if (!w.notes.isNullOrBlank()) {
+                        appendLine()
+                        appendLine("Бележки:")
+                        appendLine(w.notes)
+                    }
+                }
+
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, text)
+                }
+
+                startActivity(Intent.createChooser(shareIntent, "Сподели тренировката чрез"))
             }
         }
         btnBack.setOnClickListener {
