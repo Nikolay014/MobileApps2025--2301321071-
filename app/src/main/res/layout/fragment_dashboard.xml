@@ -3,38 +3,79 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="?attr/colorSurface">
 
-    <!-- Заглавие -->
+    <!-- Горна лента с името на приложението -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#7B4AE2"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/tvAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FitTrack"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Заглавие на екрана -->
     <TextView
         android:id="@+id/tvTitle"
-        android:text="Моите тренировки"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Моите тренировки"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
 
-    <!-- Двата бутона: бягане / силова -->
+    <!-- Подзаглавие -->
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добави нова тренировка или избери от списъка"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Контейнер с двата бутона -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp">
 
         <Button
             android:id="@+id/btnAddRun"
-            android:text="Добави бягане"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="Добави бягане"
+            android:backgroundTint="#7B4AE2"
+            android:textColor="?attr/colorOnSurface"
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/btnAddStrength"
-            android:text="Добави силова"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:layout_weight="1" />
+            android:text="Добави силова"
+            android:backgroundTint="#FF7043"
+            android:textColor="?attr/colorOnSurface"
+            android:padding="10dp" />
     </LinearLayout>
 
     <!-- Списък с тренировките -->
@@ -42,7 +83,11 @@
         android:id="@+id/rvWorkouts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>
